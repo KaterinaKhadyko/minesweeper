@@ -132,7 +132,6 @@ function cellClick (cell, field, closedCells) {
 		} else {
 			if (cell.value === "mine" && cell.opened === false) {
 				gameOver(field);
-				isOver = true;
 				cell.element.classList.add("active-mine");
 			} else if (cell.value > 0 && cell.signed == false) {
 				cell.element.innerText = cell.value;
