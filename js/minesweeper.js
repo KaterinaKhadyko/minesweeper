@@ -67,18 +67,15 @@ function createFieldElement (array, parentElement, closedCells, markedCells) {
 			
 			cellElement.addEventListener("mousedown", function (cell) {
 				return function (event) {
-		 
 					event.target.setAttribute("oncontextmenu", "return false");
 					if (event.which === 3) {
 						event.preventDefault;
-						if (cell.signed === false) {
+						if (cell.signed === false && cell.opened == false) {
 							cell.signed = true;
-							//
 							markedCells--;
-							console.log(markedCells);
 							countOfMines.innerText = markedCells;
 							cell.element.classList.add("signed");
-						} else {
+						} else if (cell.opened == false) {
 							cell.signed = false;
 							markedCells++;
 							countOfMines.innerText = markedCells;
@@ -110,7 +107,6 @@ function cellClick (cell, field, closedCells) {
 				cell.checked = true;
 				cell.opened = true;
 				closedCells--;
-				console.log(closedCells);
 				isWon(field);
 			} else if (cell.signed == false) {
 				isWon(field);
