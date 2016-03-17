@@ -19,7 +19,7 @@ for (var i = 0; i < buttonsElements.length; i++) {
 		if (e.target === smallFieldButton) {
 			fieldWidth = 15;
 			fieldHeight = 10;
-			minesCount = 20;
+			minesCount = 5;
 		} else {
 			fieldWidth = 25;
 			fieldHeight = 12;

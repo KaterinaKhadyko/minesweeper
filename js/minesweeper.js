@@ -91,15 +91,48 @@ function createFieldElement (array, parentElement, closedCells, markedCells) {
 	}
 }
 
+function emptyCellsOpening (cell, field) {
+  if (cell.signed === false) {
+    cell.checked = true;
+    cell.opened = true;
+    cell.element.classList.add("opened");
+    
+    for (var k = -1; k <= 1; k++) {
+      if (!field[cell.address.y + k]) {
+
+        continue;
+      }
+      for (var l = -1; l <= 1; l++) {
+        if (!field[cell.address.y + k][cell.address.x + l]) {
+
+          continue;
+        }
+        var currentCell = field[cell.address.y + k][cell.address.x + l];
+          if (currentCell.checked || currentCell.value === "mine") {
+
+            continue;
+        } else if (currentCell.value > 0 && currentCell.signed == false) {
+          currentCell.checked = true;
+          currentCell.opened = true;
+          currentCell.element.innerText = currentCell.value;
+          currentCell.element.classList.add("opened");
+        } else {
+          emptyCellsOpening(currentCell, field);
+        }
+      }
+    }
+  }
+}
+
 function cellClick (cell, field, closedCells) {
-				
 	return function () {
 		if (cell.signed === true) {
 
 			return;
 		} else {
-			if (cell.value === "mine") {
+			if (cell.value === "mine" && cell.opened === false) {
 				gameOver(field);
+				isOver = true;
 				cell.element.classList.add("active-mine");
 			} else if (cell.value > 0 && cell.signed == false) {
 				cell.element.innerText = cell.value;
@@ -139,11 +172,10 @@ function endOfGame (field, result) {
 			} else if (obj.element && obj.value > 0) {
 				obj.element.innerText = obj.value;
 				obj.element.classList.add("opened");
-				obj.opened = true;
 			} else if (obj.element) {
 				obj.element.classList.add("opened");
-				obj.opened = true;
 			}
+			obj.opened = true;
 		});
 	}
 }
@@ -166,11 +198,7 @@ function isWon (field) {
 			return !obj.opened;
 		});
 		closedCells = closedCells.concat(rowClosedCells);
-		var signedCells = field[i].filter(function(obj) {
 
-			return obj.signed;
-		});
-		
 	}
 	if (closedCells.length === minesCount ) {
 		var result = {
@@ -180,37 +208,4 @@ function isWon (field) {
 		}
 		endOfGame(field, result);
 	}
-}
-
-function emptyCellsOpening (cell, field) {
-  if (cell.signed === false) {
-    cell.checked = true;
-    cell.opened = true;
-    cell.element.classList.add("opened");
-    
-    for (var k = -1; k <= 1; k++) {
-      if (!field[cell.address.y + k]) {
-
-        continue;
-      }
-      for (var l = -1; l <= 1; l++) {
-        if (!field[cell.address.y + k][cell.address.x + l]) {
-
-          continue;
-        }
-        var currentCell = field[cell.address.y + k][cell.address.x + l];
-          if (currentCell.checked || currentCell.value === "mine") {
-
-            continue;
-        } else if (currentCell.value > 0 && currentCell.signed == false) {
-          currentCell.checked = true;
-          currentCell.opened = true;
-          currentCell.element.innerText = currentCell.value;
-          currentCell.element.classList.add("opened");
-        } else {
-          emptyCellsOpening(currentCell, field);
-        }
-      }
-    }
-  }
 }
