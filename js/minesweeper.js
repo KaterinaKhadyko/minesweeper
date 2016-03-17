@@ -139,8 +139,10 @@ function endOfGame (field, result) {
 			} else if (obj.element && obj.value > 0) {
 				obj.element.innerText = obj.value;
 				obj.element.classList.add("opened");
+				obj.opened = true;
 			} else if (obj.element) {
 				obj.element.classList.add("opened");
+				obj.opened = true;
 			}
 		});
 	}
