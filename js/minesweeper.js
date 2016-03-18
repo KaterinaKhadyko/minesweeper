@@ -175,6 +175,7 @@ function endOfGame (field, result) {
 				obj.element.classList.add("opened");
 			}
 			obj.opened = true;
+			obj.element.classList.remove("signed");
 		});
 	}
 }
